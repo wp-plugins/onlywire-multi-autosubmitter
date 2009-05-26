@@ -2,7 +2,7 @@
 /**
  Plugin Name: OnlyWire Multi Autosubmitter
  Plugin URI: http://lunaticstudios.com/software/wp-onlywire-multisubmit/
- Version: 1.2
+ Version: 1.2.2
  Description: Submits new posts to one or several OnlyWire accounts when published.
  Author: Thomas Hoefter
  Author URI: http://www.lunaticstudios.com/
@@ -143,7 +143,7 @@ function options_page_owsubmit() {
 			    $username=get_option("onlywire_username$i");
 			    $password=get_option("onlywire_password$i");	
 				if ($username != '' && $username != null && $password != '') {		
-				    $url="http://www.onlywire.com/api/add?url=$rurl[$rand]&title=".urlencode($rtitle[$rand]);
+				    $url="http://www.onlywire.com/api/add?url=http://lunaticstudios.com/software/&title=".urlencode("Useful and free Wordpress plugins");
 					$ch = curl_init();
 				    curl_setopt($ch, CURLOPT_URL, $url);
 					curl_setopt($ch, CURLOPT_USERPWD, $username.":".$password);
@@ -152,9 +152,9 @@ function options_page_owsubmit() {
 					curl_setopt($ch, CURLOPT_TIMEOUT, 60);					
 					$ret = curl_exec($ch);
 					curl_close ($ch);	
-echo $ret;
+
 					if ($success != "true") {
-					    if($ret=="<?xml version=\"1.0\" encoding=\"utf-8\"?><result code=\"success\" />" || $ret2=="<?xml version=\"1.0\" encoding=\"utf-8\"?><result code=\"success\" />" || $ret == "success"){
+					    if($ret=="<?xml version=\"1.0\" encoding=\"utf-8\"?><result code=\"success\" />" || $ret=="<?xml version=\"1.0\" encoding=\"utf-8\"?><result code=\"success\" />" || $ret == "success" || $ret == '<result code="sucess"/>'  ){
 					         $success = "true";
 						}						
 					}
