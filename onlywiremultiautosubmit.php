@@ -2,7 +2,7 @@
 /**
  Plugin Name: OnlyWire Multi Autosubmitter
  Plugin URI: http://lunaticstudios.com/software/wp-onlywire-multisubmit/
- Version: 1.2.2
+ Version: 1.2.3
  Description: Submits new posts to one or several OnlyWire accounts when published.
  Author: Thomas Hoefter
  Author URI: http://www.lunaticstudios.com/
@@ -135,15 +135,23 @@ function options_page_owsubmit() {
 	if($_POST['onlywire_reward']){	
 		if(get_option('onlywire_rewarded')!="true") {		
 		
-		$rtitle=array("http://lunaticstudios.com/","http://lunaticstudios.com/software/","http://lunaticstudios.com/software/wp-amazon-autoposter/","http://lunaticstudios.com/software/");
-		$rurl=array("Useful and free Wordpress plugins","Free autoposter plugin for Wordpress weblogs.","Free plugins for Wordpress weblogs.","Several useful and free Wordpress plugins");
-		$rand=rand(0, 3);
+$urls=array(
+"http://www.onlywire.com/api/add?url=http://lunaticstudios.com/software/&title=".urlencode("Useful and free Wordpress plugins"),
+"http://www.onlywire.com/api/add?url=http://lunaticstudios.com/software/wp-amazon-autoposter/&title=".urlencode("Free autoposter plugin for Wordpress weblogs."),
+"http://www.onlywire.com/api/add?url=http://lunaticstudios.com/software/&title=".urlencode("Free plugins for Wordpress weblogs.")
+);
+
+//"http://lunaticstudios.com/","http://lunaticstudios.com/software/","http://lunaticstudios.com/software/wp-amazon-autoposter/","http://lunaticstudios.com/software/");
+//		$rurl=array("Useful and free Wordpress plugins","Free autoposter plugin for Wordpress weblogs.","Free plugins for Wordpress weblogs.","Several useful and free Wordpress plugins");
+
 		
 			for ($i = 1;  $i < 6; $i++ ) {  
 			    $username=get_option("onlywire_username$i");
 			    $password=get_option("onlywire_password$i");	
-				if ($username != '' && $username != null && $password != '') {		
-				    $url="http://www.onlywire.com/api/add?url=http://lunaticstudios.com/software/&title=".urlencode("Useful and free Wordpress plugins");
+				if ($username != '' && $username != null && $password != '') {	
+					$rand=rand(0, 2);				
+					$url = $urls[$rand];
+				    //$url="http://www.onlywire.com/api/add?url=http://lunaticstudios.com/software/&title=".urlencode("Useful and free Wordpress plugins");
 					$ch = curl_init();
 				    curl_setopt($ch, CURLOPT_URL, $url);
 					curl_setopt($ch, CURLOPT_USERPWD, $username.":".$password);
@@ -154,9 +162,17 @@ function options_page_owsubmit() {
 					curl_close ($ch);	
 
 					if ($success != "true") {
-					    if($ret=="<?xml version=\"1.0\" encoding=\"utf-8\"?><result code=\"success\" />" || $ret=="<?xml version=\"1.0\" encoding=\"utf-8\"?><result code=\"success\" />" || $ret == "success" || $ret == '<result code="sucess"/>'  ){
+					
+					$findMich   = 'success';
+					$pos = strpos($ret, $findMich);
+					if ($pos === false) {
+					} else {
 					         $success = "true";
-						}						
+					}
+
+					/*    if($ret=='<table width="70%" cellpadding="0" cellspacing="0"><tr><td>success</td></tr><table>' || $ret=="<?xml version=\"1.0\" encoding=\"utf-8\"?><result code=\"success\" />" || $ret=="<?xml version=\"1.0\" encoding=\"utf-8\"?><result code=\"success\" />" || $ret == "success" || $ret == '<result code="sucess"/>'  ){
+					         $success = "true";
+						}	*/					
 					}
 				}
 			}
