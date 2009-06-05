@@ -2,7 +2,7 @@
 /**
  Plugin Name: OnlyWire Multi Autosubmitter
  Plugin URI: http://lunaticstudios.com/software/wp-onlywire-multisubmit/
- Version: 1.2.3
+ Version: 1.2.4
  Description: Submits new posts to one or several OnlyWire accounts when published.
  Author: Thomas Hoefter
  Author URI: http://www.lunaticstudios.com/
@@ -76,6 +76,7 @@ function onlywireSubmit($post_ID){
 			    $password=get_option('onlywire_password5');
 			}
 				$ch = curl_init();
+				$permalink = urlencode($permalink);
 			    $url="http://www.onlywire.com/api/add?url=".$permalink."&title=".urlencode($post->post_title);
 				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_USERPWD, $username.":".$password);
