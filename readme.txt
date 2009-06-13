@@ -1,7 +1,7 @@
 === Onlywire Multi Autosubmitter ===
 Tags: onlywire,social,bookmark,auto,automatically,bookmarker,submit,submission
 Requires at least: 2.6
-Tested up to: 2.7.1
+Tested up to: 2.8
 Stable tag: 1.2.4
 
 Automatically adds your post to social bookmarking websites using the Onlywire.com service.
